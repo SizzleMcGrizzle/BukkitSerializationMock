@@ -6,137 +6,137 @@ import java.util.stream.Collectors;
 
 class MemorySection implements ConfigurationSection{
 
-    private final Map<String, Object> map = new HashMap<>();
+    private final Map<String, Object> configMap = new HashMap<>();
 
     protected MemorySection() {
 
     }
 
     protected MemorySection(Map<String, Object> keys) {
-        setMap(keys);
+        setConfigMap(keys);
     }
 
-    protected void setMap(Map<String, Object> keys) {
+    protected void setConfigMap(Map<String, Object> keys) {
 
         if (keys == null)
             return;
-
+        
         for (Map.Entry<String, Object> entry : keys.entrySet()) {
             if (entry.getValue() instanceof Map map1)
-                map.put(entry.getKey(), deserializeMap(map1, true));
+                configMap.put(entry.getKey(), deserializeMap(map1, true));
             else if (entry.getValue() instanceof List<?> list)
-                map.put(entry.getKey(), deserializeList(list));
+                configMap.put(entry.getKey(), deserializeList(list));
             else
-                map.put(entry.getKey(), entry.getValue());
+                configMap.put(entry.getKey(), entry.getValue());
         }
     }
 
     @Override
     public boolean contains(String path) {
-        return map.containsKey(path);
+        return configMap.containsKey(path);
     }
 
     @Override
     public Object get(String path, Object def) {
-        return map.getOrDefault(path, def);
+        return configMap.getOrDefault(path, def);
     }
 
     @Override
     public Object get(String path) {
-        return map.get(path);
+        return configMap.get(path);
     }
 
     @Override
     public String getString(String path) {
-        return (String) map.get(path);
+        return (String) configMap.get(path);
     }
 
     @Override
     public String getString(String path, String def) {
-        return (String) map.getOrDefault(path, def);
+        return (String) configMap.getOrDefault(path, def);
     }
 
     @Override
     public double getDouble(String path) {
-        return (double) map.get(path);
+        return (double) configMap.get(path);
     }
 
     @Override
     public double getDouble(String path, double def) {
-        return (double) map.getOrDefault(path, def);
+        return (double) configMap.getOrDefault(path, def);
     }
 
     @Override
     public int getInt(String path) {
-        return (int) map.get(path);
+        return (int) configMap.get(path);
     }
 
     @Override
     public int getInt(String path, double def) {
-        return (int) map.getOrDefault(path, def);
+        return (int) configMap.getOrDefault(path, def);
     }
 
     @Override
     public boolean getBoolean(String path) {
-        return (boolean) map.get(path);
+        return (boolean) configMap.get(path);
     }
 
     @Override
     public boolean getBoolean(String path, boolean def) {
-        return (boolean) map.getOrDefault(path, def);
+        return (boolean) configMap.getOrDefault(path, def);
     }
 
     @Override
     public boolean isInstance(String path, Class<?> clazz) {
-        return clazz.isInstance(map.get(path));
+        return clazz.isInstance(configMap.get(path));
     }
 
     @Override
     public ConfigurationSection getConfigurationSection(String path) {
-        return (ConfigurationSection) map.get(path);
+        return (ConfigurationSection) configMap.get(path);
     }
 
     @Override
     public boolean hasConfigurationSection(String path) {
-        return map.get(path) instanceof ConfigurationSection;
+        return configMap.get(path) instanceof ConfigurationSection;
     }
 
     @Override
     public Set<String> getKeys() {
-        return Collections.unmodifiableSet(map.keySet());
+        return Collections.unmodifiableSet(configMap.keySet());
     }
 
     @Override
     public Object set(String path, Object obj) {
-        return map.put(path, obj);
+        return configMap.put(path, obj);
     }
 
     @Override
-    public ConfigurationSection createConfigurationSection(String path) {
-        return createConfigurationSection(path, new HashMap<>());
+    public ConfigurationSection createSection(String path) {
+        return createSection(path, new HashMap<>());
     }
 
     @Override
-    public ConfigurationSection createConfigurationSection(String path, Map<String, Object> map) {
+    public ConfigurationSection createSection(String path, Map<String, Object> map) {
         MemorySection section = new MemorySection(map);
-        map.put(path, section);
+        configMap.put(path, section);
         return section;
     }
 
     @Override
     public <T> List<T> getList(String path) {
-        return (List<T>) map.get(path);
+        return (List<T>) configMap.get(path);
     }
 
     @Override
     public <T> List<T> getList(String path, List<T> def) {
-        return (List<T>) map.getOrDefault(path, def);
+        return (List<T>) configMap.getOrDefault(path, def);
     }
 
-    protected Map<String, Object> getMap() {
+    protected Map<String, Object> getConfigMap() {
         HashMap<String, Object> newMap = new HashMap<>();
 
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
+        for (Map.Entry<String, Object> entry : configMap.entrySet()) {
             Object object = entry.getValue();
             String key = entry.getKey();
 
@@ -148,7 +148,7 @@ class MemorySection implements ConfigurationSection{
 
     private Object serializeObject(Object object) {
         if (object instanceof MemorySection section)
-            return section.getMap();
+            return section.getConfigMap();
         if (object instanceof ConfigurationSerializable serializable) {
             return serializeConfigurationSerializable(serializable);
         }
@@ -176,7 +176,7 @@ class MemorySection implements ConfigurationSection{
         }
 
         if (newMemorySection)
-        return new MemorySection(map);
+            return new MemorySection(map);
         else
             return map;
     }

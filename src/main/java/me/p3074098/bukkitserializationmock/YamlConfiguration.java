@@ -21,7 +21,7 @@ public class YamlConfiguration extends MemorySection {
 
             Map<String, Object> map = yaml.load(in);
 
-            setMap(map);
+            setConfigMap(map);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -47,7 +47,7 @@ public class YamlConfiguration extends MemorySection {
             options.setPrettyFlow(true);
 
             Yaml yaml = new Yaml(options);
-            yaml.dump(getMap(), writer);
+            yaml.dump(getConfigMap(), writer);
         } catch (IOException e) {
             e.printStackTrace();
         }

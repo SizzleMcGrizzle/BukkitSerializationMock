@@ -1,11 +1,11 @@
-package me.p3074098.bukkitserializationmock;
+package me.p3074098.bukkitserializationmock.util;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class ConfigurationFileUtils {
+public class FileUtil {
 
     /**
      * @param directoryName Parent directory name inside user application folder

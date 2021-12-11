@@ -27,10 +27,36 @@ public class ConfigurationSerialization {
     
     protected static <T extends ConfigurationSerializable> T load(Constructor<T> constructor, Map<String, Object> map) {
         try {
+            
+            HashMap<String, Object> newMap = new HashMap<>();
+            
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                String key = entry.getKey();
+                Object value = entry.getValue();
+                
+                newMap.put(key, calculateMap(value));
+            }
+            
             return constructor.newInstance(map);
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
             return null;
         }
+    }
+    
+    private static Object calculateMap(Object value) {
+        if (value instanceof Map m) {
+            if (m.containsKey(SERIALIZATION_KEY)) {
+                Object object = m.get(SERIALIZATION_KEY);
+            
+                if (object instanceof String className) {
+                    Constructor<? extends ConfigurationSerializable> constructor = getConstructor(className);
+                    m.remove(SERIALIZATION_KEY);
+                    return load(constructor, m);
+                }
+            }
+        }
+        
+        return value;
     }
 }

@@ -12,6 +12,7 @@ public class Person implements ConfigurationSerializable {
 
     private String name;
     private int age;
+    private Person father;
 
     public Person(String name, int age) {
         this.name = name;
@@ -21,6 +22,7 @@ public class Person implements ConfigurationSerializable {
     public Person(Map<String, Object> map) {
         this.name = (String) map.get("name");
         this.age = (int) map.get("age");
+        this.father = map.containsKey("father") ? (Person) map.get("father") : null;
     }
 
     public String getName() {
@@ -30,7 +32,15 @@ public class Person implements ConfigurationSerializable {
     public int getAge() {
         return age;
     }
-
+    
+    public Person getFather() {
+        return father;
+    }
+    
+    public void setFather(Person father) {
+        this.father = father;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -45,6 +55,9 @@ public class Person implements ConfigurationSerializable {
 
         map.put("name", name);
         map.put("age", age);
+        
+        if (father != null)
+            map.put("father", father);
 
         return map;
     }

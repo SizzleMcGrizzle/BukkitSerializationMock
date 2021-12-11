@@ -38,9 +38,9 @@ public interface ConfigurationSection {
 
     <T> List<T> getList(String path, List<T> def);
 
-    ConfigurationSection createConfigurationSection(String path);
+    ConfigurationSection createSection(String path);
 
-    ConfigurationSection createConfigurationSection(String path, Map<String, Object> map);
+    ConfigurationSection createSection(String path, Map<String, Object> map);
 
     Set<String> getKeys();
 
